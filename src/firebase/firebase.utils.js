@@ -1,7 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
-import { getAuth, signOut, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 
 const firebaseConfig = {
@@ -14,14 +13,13 @@ const firebaseConfig = {
   measurementId: "G-6C0TH3ZJ7K"
 };
 
-const app = initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
-const analytics = getAnalytics(app);
+export const auth = firebase.auth()
 
-export const auth = getAuth(app)
+export const db = firebase.firestore();
 
-const db = getFirestore();
+const provider = new firebase.auth.GoogleAuthProvider();
+provider.setCustomParameters({ prompt: 'select_account' });
 
-const provider = new GoogleAuthProvider();
-
-export const SignInWithGoogle = () => {return signInWithPopup(auth, provider)};
+export const SignInWithGoogle = () => {return auth.signInWithPopup(provider)};
